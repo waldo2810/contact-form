@@ -1,9 +1,10 @@
-import { Repository } from 'typeorm';
-import { ContactRepository } from '../../domain/ContactRepository';
-import { ContactEntity } from './typeorm/contact.entity';
-import { Contact } from '../../domain/Contact';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Contact } from '../../domain/Contact';
+import { ContactRepository } from '../../domain/ContactRepository';
+import { ContactId } from '../../domain/value-objects/ContactId';
+import { ContactEntity } from './typeorm/contact.entity';
 
 @Injectable()
 export class ContactTypeOrmRepository implements ContactRepository {
@@ -17,5 +18,13 @@ export class ContactTypeOrmRepository implements ContactRepository {
     const saved = await this.repository.save(primitive);
     const domain = Contact.fromPrimitives(saved);
     return domain;
+  }
+
+  public async findById(id: ContactId): Promise<Contact | null> {
+    const found = await this.repository.findOne({
+      where: { id: id.toString() },
+    });
+    if (!found) return null;
+    return Contact.fromPrimitives(found);
   }
 }

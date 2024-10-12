@@ -8,16 +8,16 @@ import { ContactLastName } from './value-objects/ContactLastName';
 
 export class Contact {
   private readonly id: ContactId;
-  private readonly firstName: ContactFirstName;
-  private readonly lastName: ContactLastName;
-  private readonly email: ContactEmail;
-  private readonly birthDate: ContactBirthDate;
-  private readonly age: ContactAge;
-  private readonly line1: string;
-  private readonly line2?: string;
-  private readonly city: string;
-  private readonly state: string;
-  private readonly country: string;
+  private firstName: ContactFirstName;
+  private lastName: ContactLastName;
+  private email: ContactEmail;
+  private birthDate: ContactBirthDate;
+  private age: ContactAge;
+  private line1: string;
+  private line2?: string;
+  private city: string;
+  private state: string;
+  private country: string;
 
   constructor(
     id: ContactId,
@@ -100,10 +100,10 @@ export class Contact {
     birthDate: string;
     age: number;
     line1: string;
-    line2: string;
     city: string;
     state: string;
     country: string;
+    line2?: string;
   }) {
     return new Contact(
       new ContactId(primitives.id),
@@ -118,5 +118,49 @@ export class Contact {
       primitives.country,
       primitives.line2,
     );
+  }
+
+  public getId(): ContactId {
+    return this.id;
+  }
+
+  public getFirstName(): ContactFirstName {
+    return this.firstName;
+  }
+
+  public getLastName(): ContactLastName {
+    return this.lastName;
+  }
+
+  public getEmail(): ContactEmail {
+    return this.email;
+  }
+
+  public getBirthDate(): ContactBirthDate {
+    return this.birthDate;
+  }
+
+  public getAge(): ContactAge {
+    return this.age;
+  }
+
+  public getLine1(): string {
+    return this.line1;
+  }
+
+  public getLine2(): string | undefined {
+    return this.line2;
+  }
+
+  public getCity(): string {
+    return this.city;
+  }
+
+  public getState(): string {
+    return this.state;
+  }
+
+  public getCountry(): string {
+    return this.country;
   }
 }
