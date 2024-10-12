@@ -1,3 +1,4 @@
+import { UserIsMinorError } from './exceptions/UserIsMinorError';
 import { ContactAge } from './value-objects/ContactAge';
 import { ContactBirthDate } from './value-objects/ContactBirthDate';
 import { ContactEmail } from './value-objects/ContactEmail';
@@ -57,6 +58,9 @@ export class Contact {
   ): Contact {
     const id = ContactId.generate();
     const age = ContactAge.fromBirthDate(birthDate);
+    if (!age.isAdult()) {
+      throw new UserIsMinorError(id.toString());
+    }
     return new Contact(
       id,
       firstName,

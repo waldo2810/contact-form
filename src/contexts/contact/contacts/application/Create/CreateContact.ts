@@ -27,7 +27,7 @@ export class CreateContact {
       req.address.country,
       req.address.line2,
     );
-    const saved = await this.contactRepository.save(contact);
+    const saved = await this.contactRepository.persist(contact);
     return new ContactResponse(saved);
   }
 }
