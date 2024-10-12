@@ -8,11 +8,11 @@ const configService = new ConfigService();
 
 export default new DataSource({
   type: 'mysql',
-  host: 'localhost',
-  port: 3306,
-  username: 'root',
-  password: 'root',
-  database: 'contacts',
+  host: configService.get<string>('MYSQL_HOST'),
+  port: configService.get<number>('MYSQL_PORT'),
+  username: configService.get<string>('MYSQL_USERNAME'),
+  password: configService.get<string>('MYSQL_PASSWORD'),
+  database: configService.get<string>('MYSQL_DATABASE'),
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/../**/migrations/*{.ts,.js}'],
 });

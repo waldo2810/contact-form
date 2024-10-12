@@ -1,16 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CountryEntity } from './_countries/infrastructure/persistence/typeorm/country.entity';
 import { CreateContact } from './contacts/application/Create/CreateContact';
 import { FindContactById } from './contacts/application/FindById/FindContactById';
 import { ContactsController } from './contacts/infrastructure/ContactsController';
 import { ContactTypeOrmRepository } from './contacts/infrastructure/persistence/ContactTypeOrmRepository';
 import { ContactEntity } from './contacts/infrastructure/persistence/typeorm/contact.entity';
-import { CountryController } from './countries/infrastructure/CountryController';
-import { FindCountryById } from './countries/application/FindById/FindCountryById';
-import { FindAllCountries } from './countries/application/FindAll/FindAllCountries';
-import { CountryTypeOrmRepository } from './countries/infrastructure/persistence/CountryTypeOrmRepository';
-import { CountryEntity } from './countries/infrastructure/persistence/typeorm/country.entity';
+import { FindAllCountries } from './places/application/FindAllCountries';
+import { PlacesApiRepository } from './places/infrastructure/PlacesApiRepository';
 
 @Module({
   imports: [
@@ -19,11 +17,11 @@ import { CountryEntity } from './countries/infrastructure/persistence/typeorm/co
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: 'localhost',
-        port: 3306,
-        username: 'root',
-        password: 'root',
-        database: 'contacts',
+        host: configService.get<string>('MYSQL_HOST'),
+        port: configService.get<number>('MYSQL_PORT'),
+        username: configService.get<string>('MYSQL_USERNAME'),
+        password: configService.get<string>('MYSQL_PASSWORD'),
+        database: configService.get<string>('MYSQL_DATABASE'),
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         synchronize: true,
       }),
@@ -33,11 +31,10 @@ import { CountryEntity } from './countries/infrastructure/persistence/typeorm/co
   providers: [
     CreateContact,
     FindContactById,
-    FindCountryById,
     FindAllCountries,
     { provide: 'ContactRepository', useClass: ContactTypeOrmRepository },
-    { provide: 'CountryRepository', useClass: CountryTypeOrmRepository },
+    { provide: 'PlacesRepository', useClass: PlacesApiRepository },
   ],
-  controllers: [ContactsController, CountryController],
+  controllers: [ContactsController],
 })
 export class ContactModule {}
