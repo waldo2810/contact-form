@@ -18,9 +18,6 @@ export class ContactEntity {
   birthDate: string;
 
   @Column()
-  age: number;
-
-  @Column()
   line1: string;
 
   @Column({ nullable: true })

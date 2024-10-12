@@ -1,5 +1,4 @@
 import { UserIsMinorError } from './exceptions/UserIsMinorError';
-import { ContactAge } from './value-objects/ContactAge';
 import { ContactBirthDate } from './value-objects/ContactBirthDate';
 import { ContactEmail } from './value-objects/ContactEmail';
 import { ContactFirstName } from './value-objects/ContactFirstName';
@@ -12,7 +11,6 @@ export class Contact {
   private lastName: ContactLastName;
   private email: ContactEmail;
   private birthDate: ContactBirthDate;
-  private age: ContactAge;
   private line1: string;
   private line2?: string;
   private city: string;
@@ -26,7 +24,6 @@ export class Contact {
     lastName: ContactLastName,
     email: ContactEmail,
     birthDate: ContactBirthDate,
-    age: ContactAge,
     line1: string,
     city: string,
     state: string,
@@ -39,7 +36,6 @@ export class Contact {
     this.lastName = lastName;
     this.email = email;
     this.birthDate = birthDate;
-    this.age = age;
     this.line1 = line1;
     this.line2 = line2;
     this.city = city;
@@ -60,17 +56,12 @@ export class Contact {
     line2?: string,
   ): Contact {
     const id = ContactId.generate();
-    const age = ContactAge.fromBirthDate(birthDate);
-    if (!age.isAdult()) {
-      throw new UserIsMinorError(id.toString());
-    }
     return new Contact(
       id,
       firstName,
       lastName,
       email,
       birthDate,
-      age,
       line1,
       city,
       state,
@@ -91,7 +82,6 @@ export class Contact {
       lastName: this.lastName.getValue(),
       email: this.email.getValue(),
       birthDate: this.birthDate.getValue().toISOString(),
-      age: this.age.getValue(),
       line1: this.line1,
       line2: this.line2,
       city: this.city,
@@ -107,7 +97,6 @@ export class Contact {
     lastName: string;
     email: string;
     birthDate: string;
-    age: number;
     line1: string;
     city: string;
     state: string;
@@ -121,7 +110,6 @@ export class Contact {
       new ContactLastName(primitives.lastName),
       new ContactEmail(primitives.email),
       new ContactBirthDate(primitives.birthDate),
-      new ContactAge(primitives.age),
       primitives.line1,
       primitives.city,
       primitives.state,
@@ -149,10 +137,6 @@ export class Contact {
 
   public getBirthDate(): ContactBirthDate {
     return this.birthDate;
-  }
-
-  public getAge(): ContactAge {
-    return this.age;
   }
 
   public getLine1(): string {

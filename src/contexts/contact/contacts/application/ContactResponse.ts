@@ -6,7 +6,6 @@ export class ContactResponse {
   private readonly lastName: string;
   private readonly email: string;
   private readonly birthDate: string;
-  private readonly age: number;
   private readonly address: object;
 
   constructor(contact: Contact) {
@@ -16,7 +15,6 @@ export class ContactResponse {
     this.lastName = primitive.lastName;
     this.email = primitive.email;
     this.birthDate = primitive.birthDate;
-    this.age = primitive.age;
     this.address = {
       line1: primitive.line1,
       line2: primitive.line2,

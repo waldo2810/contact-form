@@ -20,6 +20,7 @@ import { FindContactById } from '../application/FindById/FindContactById';
 import { ContactNotFoundException } from '../domain/exceptions/ContactNotFoundException';
 import { UserIsMinorError } from '../domain/exceptions/UserIsMinorError';
 import { FindAllContacts } from '../application/FindAll/FindAllContacts';
+import { FutureBirthDateException } from '../domain/exceptions/FutureBirthdateException';
 
 @Controller('contacts')
 export class ContactsController {
@@ -36,6 +37,7 @@ export class ContactsController {
       return await this.createContactUseCase.run(req);
     } catch (e) {
       if (
+        e instanceof FutureBirthDateException ||
         e instanceof UserIsMinorError ||
         e instanceof CountryNotFoundException ||
         e instanceof StateNotFoundException ||

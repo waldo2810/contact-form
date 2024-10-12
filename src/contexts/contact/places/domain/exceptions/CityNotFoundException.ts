@@ -1,5 +1,5 @@
 export class CityNotFoundException extends Error {
   constructor(code: string) {
-    super(`City with code ${code} not found`);
+    super(`City with name ${code} not found`);
   }
 }
