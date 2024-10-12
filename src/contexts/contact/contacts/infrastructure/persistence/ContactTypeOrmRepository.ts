@@ -32,6 +32,13 @@ export class ContactTypeOrmRepository implements ContactRepository {
     return Contact.fromPrimitives(found);
   }
 
+  public async findAllByCity(cityName: string): Promise<Contact[]> {
+    const found = await this.repository.find({
+      where: { city: cityName },
+    });
+    return found.map((found) => Contact.fromPrimitives(found));
+  }
+
   public async delete(id: ContactId): Promise<void> {
     await this.repository.delete(id.toString());
   }

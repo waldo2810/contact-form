@@ -4,11 +4,13 @@ import { FindCountryByCode } from 'src/contexts/contact/places/application/FindC
 import { FindStateByCode } from 'src/contexts/contact/places/application/FindStateByCode';
 import { Contact } from '../../domain/Contact';
 import { ContactRepository } from '../../domain/ContactRepository';
+import { MoreThanThreeContactsInCityError } from '../../domain/exceptions/MoreThanThreeContactsInCityError';
 import { ContactBirthDate } from '../../domain/value-objects/ContactBirthDate';
 import { ContactEmail } from '../../domain/value-objects/ContactEmail';
 import { ContactFirstName } from '../../domain/value-objects/ContactFirstName';
 import { ContactLastName } from '../../domain/value-objects/ContactLastName';
 import { ContactResponse } from '../ContactResponse';
+import { FindAllContactsByCity } from '../FindAllByCity/FindAllContactsByCity';
 import { CreateContactDto } from './CreateContactDto';
 
 @Injectable()
@@ -16,6 +18,7 @@ export class CreateContact {
   constructor(
     @Inject('ContactRepository')
     private readonly contactRepository: ContactRepository,
+    private readonly findByCityUseCase: FindAllContactsByCity,
     private readonly findCountryUseCase: FindCountryByCode,
     private readonly findStateUseCase: FindStateByCode,
     private readonly findCityUseCase: FindCityByCountryCodeAndStateCode,
@@ -49,6 +52,7 @@ export class CreateContact {
       state.getIsoCode(),
       address.city,
     );
+    await this.validateNumberOfContacts(city.getName());
     return {
       line1: address.line1,
       line2: address.line2,
@@ -56,5 +60,12 @@ export class CreateContact {
       state: state.getIsoCode(),
       country: country.getIsoCode(),
     };
+  }
+
+  private async validateNumberOfContacts(cityName: string) {
+    const existingForCity = await this.findByCityUseCase.run(cityName);
+    if (existingForCity.length >= 3) {
+      throw new MoreThanThreeContactsInCityError(cityName);
+    }
   }
 }

@@ -16,11 +16,12 @@ import { StateNotFoundException } from '../../places/domain/exceptions/StateNotF
 import { CreateContact } from '../application/Create/CreateContact';
 import { CreateContactDto } from '../application/Create/CreateContactDto';
 import { DeleteContact } from '../application/Delete/DeleteContact';
+import { FindAllContacts } from '../application/FindAll/FindAllContacts';
 import { FindContactById } from '../application/FindById/FindContactById';
 import { ContactNotFoundException } from '../domain/exceptions/ContactNotFoundException';
-import { UserIsMinorError } from '../domain/exceptions/UserIsMinorError';
-import { FindAllContacts } from '../application/FindAll/FindAllContacts';
 import { FutureBirthDateException } from '../domain/exceptions/FutureBirthdateException';
+import { MoreThanThreeContactsInCityError } from '../domain/exceptions/MoreThanThreeContactsInCityError';
+import { UserIsMinorError } from '../domain/exceptions/UserIsMinorError';
 
 @Controller('contacts')
 export class ContactsController {
@@ -41,7 +42,8 @@ export class ContactsController {
         e instanceof UserIsMinorError ||
         e instanceof CountryNotFoundException ||
         e instanceof StateNotFoundException ||
-        e instanceof CityNotFoundException
+        e instanceof CityNotFoundException ||
+        e instanceof MoreThanThreeContactsInCityError
       ) {
         throw new BadRequestException(e.message);
       }
