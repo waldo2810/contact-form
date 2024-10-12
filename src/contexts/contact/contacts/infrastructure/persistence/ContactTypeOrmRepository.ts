@@ -12,12 +12,16 @@ export class ContactTypeOrmRepository implements ContactRepository {
     @InjectRepository(ContactEntity)
     private readonly repository: Repository<ContactEntity>,
   ) {}
-
   public async persist(contact: Contact): Promise<Contact> {
     const primitive = contact.toPrimitives();
     const saved = await this.repository.save(primitive);
     const domain = Contact.fromPrimitives(saved);
     return domain;
+  }
+
+  public async findAll(): Promise<Contact[]> {
+    const found = await this.repository.find();
+    return found.map((found) => Contact.fromPrimitives(found));
   }
 
   public async findById(id: ContactId): Promise<Contact | null> {

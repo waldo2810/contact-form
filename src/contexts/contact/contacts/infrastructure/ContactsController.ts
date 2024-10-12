@@ -19,12 +19,14 @@ import { DeleteContact } from '../application/Delete/DeleteContact';
 import { FindContactById } from '../application/FindById/FindContactById';
 import { ContactNotFoundException } from '../domain/exceptions/ContactNotFoundException';
 import { UserIsMinorError } from '../domain/exceptions/UserIsMinorError';
+import { FindAllContacts } from '../application/FindAll/FindAllContacts';
 
 @Controller('contacts')
 export class ContactsController {
   constructor(
     private readonly createContactUseCase: CreateContact,
     private readonly findByIdUseCase: FindContactById,
+    private readonly findAllUseCase: FindAllContacts,
     private readonly deleteContactUseCase: DeleteContact,
   ) {}
 
@@ -57,6 +59,16 @@ export class ContactsController {
       if (e instanceof ContactNotFoundException) {
         throw new BadRequestException(e.message);
       }
+      console.log(e);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @Get()
+  public async findAllContacts() {
+    try {
+      return await this.findAllUseCase.run();
+    } catch (e) {
       console.log(e);
       throw new InternalServerErrorException();
     }

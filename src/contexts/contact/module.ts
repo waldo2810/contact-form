@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CountryEntity } from './_countries/infrastructure/persistence/typeorm/country.entity';
 import { CreateContact } from './contacts/application/Create/CreateContact';
 import { DeleteContact } from './contacts/application/Delete/DeleteContact';
+import { FindAllContacts } from './contacts/application/FindAll/FindAllContacts';
 import { FindContactById } from './contacts/application/FindById/FindContactById';
 import { ContactsController } from './contacts/infrastructure/ContactsController';
 import { ContactTypeOrmRepository } from './contacts/infrastructure/persistence/ContactTypeOrmRepository';
@@ -35,6 +36,7 @@ import { PlacesApiRepository } from './places/infrastructure/PlacesApiRepository
   providers: [
     CreateContact,
     FindContactById,
+    FindAllContacts,
     DeleteContact,
     FindAllCountries,
     FindCountryByCode,
