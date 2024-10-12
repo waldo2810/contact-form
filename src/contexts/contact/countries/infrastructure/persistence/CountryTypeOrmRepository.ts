@@ -12,6 +12,11 @@ export class CountryTypeOrmRepository implements CountryRepository {
     private readonly repository: Repository<CountryEntity>,
   ) {}
 
+  public async findAll(): Promise<Country[]> {
+    const found = await this.repository.find();
+    return found.map((country) => Country.fromPrimitives(country));
+  }
+
   public async findById(id: string): Promise<Country | null> {
     const found = await this.repository.findOne({
       where: { id: id.toString() },
