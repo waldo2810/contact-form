@@ -1,6 +1,9 @@
 import { ConfigService } from '@nestjs/config';
-import { PlacesRepository } from '../domain/PlacesRepository';
+import { City } from '../domain/City';
 import { Country } from '../domain/Country';
+import { PlacesRepository } from '../domain/PlacesRepository';
+import { State } from '../domain/State';
+import { CountryNotFoundException } from '../domain/exceptions/CountryNotFoundException';
 
 export class PlacesApiRepository implements PlacesRepository {
   private readonly baseUrl: string;
@@ -26,24 +29,33 @@ export class PlacesApiRepository implements PlacesRepository {
     return found.map((country: any) => Country.fromPrimitives({ ...country }));
   }
 
-  async findCountryDataByCountryCode(code: string): Promise<any> {
+  async findCountryDataByCountryCode(code: string): Promise<Country> {
     const url = `${this.baseUrl}/country-data-by-countrycode?countrycode=${code}`;
     const res = await fetch(url, this.options);
     const found = await res.json();
+    if (typeof found !== 'object') {
+      throw new CountryNotFoundException(code);
+    }
+    return Country.fromPrimitives({ ...found });
   }
 
-  async findStatesByCountryCode(code: string): Promise<any> {
+  async findStatesByCountryCode(code: string): Promise<State[]> {
     const url = `${this.baseUrl}/states-by-countrycode?countrycode=${code}`;
     const res = await fetch(url, this.options);
     const found = await res.json();
+    if (typeof found !== 'object') {
+      throw new CountryNotFoundException(code);
+    }
+    return found.map((state: any) => State.fromPrimitives({ ...state }));
   }
 
   async findCitiesByCountryCodeAndStateCode(
     countryCode: string,
     stateCode: string,
-  ): Promise<any> {
+  ): Promise<City[]> {
     const url = `${this.baseUrl}/cities-by-countrycode-and-statecode?countrycode=${countryCode}&statecode=${stateCode}`;
     const res = await fetch(url, this.options);
     const found = await res.json();
+    return found.map((city: any) => City.fromPrimitives({ ...city }));
   }
 }

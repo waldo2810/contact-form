@@ -11,10 +11,14 @@ export class FindCountryById {
   ) {}
 
   public async run(id: string): Promise<CountryResponse> {
-    const found = await this.countryRepository.findById(id);
-    if (!found) {
-      throw new CountryNotFoundException(id);
+    try {
+      const found = await this.countryRepository.findById(id);
+      if (!found) {
+        throw new CountryNotFoundException(id);
+      }
+      return new CountryResponse(found);
+    } catch (e) {
+      throw e;
     }
-    return new CountryResponse(found);
   }
 }

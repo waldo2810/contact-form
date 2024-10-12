@@ -1,33 +1,60 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateContactDto } from './CreateContactDto';
+import { FindCityByCountryCodeAndStateCode } from 'src/contexts/contact/places/application/FindCityByCountryCodeAndStateCode';
+import { FindCountryByCode } from 'src/contexts/contact/places/application/FindCountryByCode';
+import { FindStateByCode } from 'src/contexts/contact/places/application/FindStateByCode';
 import { Contact } from '../../domain/Contact';
-import { ContactResponse } from '../ContactResponse';
+import { ContactRepository } from '../../domain/ContactRepository';
+import { ContactBirthDate } from '../../domain/value-objects/ContactBirthDate';
+import { ContactEmail } from '../../domain/value-objects/ContactEmail';
 import { ContactFirstName } from '../../domain/value-objects/ContactFirstName';
 import { ContactLastName } from '../../domain/value-objects/ContactLastName';
-import { ContactEmail } from '../../domain/value-objects/ContactEmail';
-import { ContactBirthDate } from '../../domain/value-objects/ContactBirthDate';
-import { ContactRepository } from '../../domain/ContactRepository';
+import { ContactResponse } from '../ContactResponse';
+import { CreateContactDto } from './CreateContactDto';
 
 @Injectable()
 export class CreateContact {
   constructor(
     @Inject('ContactRepository')
     private readonly contactRepository: ContactRepository,
+    private readonly findCountryUseCase: FindCountryByCode,
+    private readonly findStateUseCase: FindStateByCode,
+    private readonly findCityUseCase: FindCityByCountryCodeAndStateCode,
   ) {}
 
   public async run(req: CreateContactDto): Promise<ContactResponse> {
+    const validAddress = await this.buildAddress(req.address);
     const contact = Contact.create(
       new ContactFirstName(req.firstName),
       new ContactLastName(req.lastName),
       new ContactEmail(req.email),
       new ContactBirthDate(req.birthDate),
-      req.address.line1,
-      req.address.city,
-      req.address.state,
-      req.address.country,
-      req.address.line2,
+      validAddress.line1,
+      validAddress.city,
+      validAddress.state,
+      validAddress.country,
+      validAddress.line2,
     );
     const saved = await this.contactRepository.persist(contact);
     return new ContactResponse(saved);
+  }
+
+  private async buildAddress(address: CreateContactDto['address']) {
+    const country = await this.findCountryUseCase.run(address.country);
+    const state = await this.findStateUseCase.run(
+      country.getIsoCode(),
+      address.state,
+    );
+    const city = await this.findCityUseCase.run(
+      country.getIsoCode(),
+      state.getIsoCode(),
+      address.city,
+    );
+    return {
+      line1: address.line1,
+      line2: address.line2,
+      city: city.getName(),
+      state: state.getIsoCode(),
+      country: country.getIsoCode(),
+    };
   }
 }

@@ -8,7 +8,10 @@ import { ContactsController } from './contacts/infrastructure/ContactsController
 import { ContactTypeOrmRepository } from './contacts/infrastructure/persistence/ContactTypeOrmRepository';
 import { ContactEntity } from './contacts/infrastructure/persistence/typeorm/contact.entity';
 import { FindAllCountries } from './places/application/FindAllCountries';
+import { FindCityByCountryCodeAndStateCode } from './places/application/FindCityByCountryCodeAndStateCode';
+import { FindCountryByCode } from './places/application/FindCountryByCode';
 import { PlacesApiRepository } from './places/infrastructure/PlacesApiRepository';
+import { FindStateByCode } from './places/application/FindStateByCode';
 
 @Module({
   imports: [
@@ -32,6 +35,9 @@ import { PlacesApiRepository } from './places/infrastructure/PlacesApiRepository
     CreateContact,
     FindContactById,
     FindAllCountries,
+    FindCountryByCode,
+    FindStateByCode,
+    FindCityByCountryCodeAndStateCode,
     { provide: 'ContactRepository', useClass: ContactTypeOrmRepository },
     { provide: 'PlacesRepository', useClass: PlacesApiRepository },
   ],

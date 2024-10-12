@@ -8,6 +8,9 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
+import { CityNotFoundException } from '../../places/domain/exceptions/CityNotFoundException';
+import { CountryNotFoundException } from '../../places/domain/exceptions/CountryNotFoundException';
+import { StateNotFoundException } from '../../places/domain/exceptions/StateNotFoundException';
 import { CreateContact } from '../application/Create/CreateContact';
 import { CreateContactDto } from '../application/Create/CreateContactDto';
 import { FindContactById } from '../application/FindById/FindContactById';
@@ -26,9 +29,15 @@ export class ContactsController {
     try {
       return await this.createContactUseCase.run(req);
     } catch (e) {
-      if (e instanceof UserIsMinorError) {
+      if (
+        e instanceof UserIsMinorError ||
+        e instanceof CountryNotFoundException ||
+        e instanceof StateNotFoundException ||
+        e instanceof CityNotFoundException
+      ) {
         throw new BadRequestException(e.message);
       }
+      console.log(e);
       throw new InternalServerErrorException();
     }
   }
