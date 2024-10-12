@@ -34,4 +34,7 @@ export class ContactEntity {
 
   @Column()
   country: string;
+
+  @Column({ default: false })
+  deleted: boolean;
 }

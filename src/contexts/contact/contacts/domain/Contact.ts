@@ -18,6 +18,7 @@ export class Contact {
   private city: string;
   private state: string;
   private country: string;
+  private deleted: boolean;
 
   constructor(
     id: ContactId,
@@ -30,6 +31,7 @@ export class Contact {
     city: string,
     state: string,
     country: string,
+    deleted: boolean,
     line2?: string,
   ) {
     this.id = id;
@@ -43,6 +45,7 @@ export class Contact {
     this.city = city;
     this.state = state;
     this.country = country;
+    this.deleted = deleted;
   }
 
   public static create(
@@ -72,8 +75,13 @@ export class Contact {
       city,
       state,
       country,
+      false,
       line2,
     );
+  }
+
+  public softDelete() {
+    this.deleted = true;
   }
 
   public toPrimitives() {
@@ -89,6 +97,7 @@ export class Contact {
       city: this.city,
       state: this.state,
       country: this.country,
+      deleted: this.deleted,
     };
   }
 
@@ -104,6 +113,7 @@ export class Contact {
     state: string;
     country: string;
     line2?: string;
+    deleted: boolean;
   }) {
     return new Contact(
       new ContactId(primitives.id),
@@ -116,6 +126,7 @@ export class Contact {
       primitives.city,
       primitives.state,
       primitives.country,
+      primitives.deleted,
       primitives.line2,
     );
   }

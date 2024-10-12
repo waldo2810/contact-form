@@ -27,4 +27,8 @@ export class ContactTypeOrmRepository implements ContactRepository {
     if (!found) return null;
     return Contact.fromPrimitives(found);
   }
+
+  public async delete(id: ContactId): Promise<void> {
+    await this.repository.delete(id.toString());
+  }
 }
