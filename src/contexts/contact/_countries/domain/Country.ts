@@ -29,3 +29,14 @@ export class Country {
     };
   }
 }
+
+// {
+//   name: 'Honduras',
+//   isoCode: 'HN',
+//   flag: '🇭🇳',
+//   phonecode: '504',
+//   currency: 'HNL',
+//   latitude: '15.00000000',
+//   longitude: '-86.50000000',
+//   timezones: [ [Object] ]
+// },
