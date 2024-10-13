@@ -8,21 +8,24 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { CityNotFoundException } from '../../places/domain/exceptions/CityNotFoundException';
 import { CountryNotFoundException } from '../../places/domain/exceptions/CountryNotFoundException';
 import { StateNotFoundException } from '../../places/domain/exceptions/StateNotFoundException';
+import { CountAllContactsByCity } from '../application/CountAllByCity/CountAllContactsByCity';
 import { CreateContact } from '../application/Create/CreateContact';
 import { CreateContactDto } from '../application/Create/CreateContactDto';
 import { DeleteContact } from '../application/Delete/DeleteContact';
 import { FindAllContacts } from '../application/FindAll/FindAllContacts';
 import { FindContactById } from '../application/FindById/FindContactById';
+import { ModifyContact } from '../application/Modify/ModifyContact';
+import { ModifyContactDto } from '../application/Modify/ModifyContactDto';
 import { ContactNotFoundException } from '../domain/exceptions/ContactNotFoundException';
 import { FutureBirthDateException } from '../domain/exceptions/FutureBirthdateException';
 import { MoreThanThreeContactsInCityError } from '../domain/exceptions/MoreThanThreeContactsInCityError';
 import { UserIsMinorError } from '../domain/exceptions/UserIsMinorError';
-import { CountAllContactsByCity } from '../application/CountAllByCity/CountAllContactsByCity';
 
 @Controller('contacts')
 export class ContactsController {
@@ -31,6 +34,7 @@ export class ContactsController {
     private readonly findByIdUseCase: FindContactById,
     private readonly findAllUseCase: FindAllContacts,
     private readonly deleteContactUseCase: DeleteContact,
+    private readonly modifyContactUseCase: ModifyContact,
     private readonly countAllByCityUseCase: CountAllContactsByCity,
   ) {}
 
@@ -40,6 +44,30 @@ export class ContactsController {
       return await this.createContactUseCase.run(req);
     } catch (e) {
       if (
+        e instanceof FutureBirthDateException ||
+        e instanceof UserIsMinorError ||
+        e instanceof CountryNotFoundException ||
+        e instanceof StateNotFoundException ||
+        e instanceof CityNotFoundException ||
+        e instanceof MoreThanThreeContactsInCityError
+      ) {
+        throw new BadRequestException(e.message);
+      }
+      console.log(e);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @Put(':id')
+  public async modifyContact(
+    @Param('id') id: string,
+    @Body() req: ModifyContactDto,
+  ) {
+    try {
+      return await this.modifyContactUseCase.run(id, req);
+    } catch (e) {
+      if (
+        e instanceof ContactNotFoundException ||
         e instanceof FutureBirthDateException ||
         e instanceof UserIsMinorError ||
         e instanceof CountryNotFoundException ||

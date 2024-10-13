@@ -16,6 +16,7 @@ import { FindCityByCountryCodeAndStateCode } from './places/application/FindCity
 import { FindCountryByCode } from './places/application/FindCountryByCode';
 import { FindStateByCode } from './places/application/FindStateByCode';
 import { PlacesApiRepository } from './places/infrastructure/PlacesApiRepository';
+import { ModifyContact } from './contacts/application/Modify/ModifyContact';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { PlacesApiRepository } from './places/infrastructure/PlacesApiRepository
     FindAllContacts,
     FindAllContactsByCity,
     DeleteContact,
+    ModifyContact,
     CountAllContactsByCity,
     FindAllCountries,
     FindCountryByCode,

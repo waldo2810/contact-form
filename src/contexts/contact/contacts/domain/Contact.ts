@@ -1,4 +1,3 @@
-import { UserIsMinorError } from './exceptions/UserIsMinorError';
 import { ContactBirthDate } from './value-objects/ContactBirthDate';
 import { ContactEmail } from './value-objects/ContactEmail';
 import { ContactFirstName } from './value-objects/ContactFirstName';
@@ -71,6 +70,20 @@ export class Contact {
     );
   }
 
+  public modify(fields: ModifyContactFields): Contact {
+    if (fields.firstName) this.firstName = fields.firstName;
+    if (fields.lastName) this.lastName = fields.lastName;
+    if (fields.email) this.email = fields.email;
+    if (fields.birthDate) this.birthDate = fields.birthDate;
+    if (fields.line1) this.line1 = fields.line1;
+    if (fields.city) this.city = fields.city;
+    if (fields.state) this.state = fields.state;
+    if (fields.country) this.country = fields.country;
+    if (fields.line2 !== undefined) this.line2 = fields.line2;
+
+    return this;
+  }
+
   public softDelete() {
     this.deleted = true;
   }
@@ -91,19 +104,7 @@ export class Contact {
     };
   }
 
-  public static fromPrimitives(primitives: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    birthDate: string;
-    line1: string;
-    city: string;
-    state: string;
-    country: string;
-    line2?: string;
-    deleted: boolean;
-  }) {
+  public static fromPrimitives(primitives: ContactPrimitives) {
     return new Contact(
       new ContactId(primitives.id),
       new ContactFirstName(primitives.firstName),
