@@ -6,5 +6,6 @@ export interface ContactRepository {
   findById(id: ContactId): Promise<Contact | null>;
   findAll(): Promise<Contact[]>;
   findAllByCity(cityName: string): Promise<Contact[]>;
+  countByCity(): Promise<any>;
   delete(id: ContactId): Promise<void>;
 }

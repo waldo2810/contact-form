@@ -22,6 +22,7 @@ import { ContactNotFoundException } from '../domain/exceptions/ContactNotFoundEx
 import { FutureBirthDateException } from '../domain/exceptions/FutureBirthdateException';
 import { MoreThanThreeContactsInCityError } from '../domain/exceptions/MoreThanThreeContactsInCityError';
 import { UserIsMinorError } from '../domain/exceptions/UserIsMinorError';
+import { CountAllContactsByCity } from '../application/CountAllByCity/CountAllContactsByCity';
 
 @Controller('contacts')
 export class ContactsController {
@@ -30,6 +31,7 @@ export class ContactsController {
     private readonly findByIdUseCase: FindContactById,
     private readonly findAllUseCase: FindAllContacts,
     private readonly deleteContactUseCase: DeleteContact,
+    private readonly countAllByCityUseCase: CountAllContactsByCity,
   ) {}
 
   @Post()
@@ -72,6 +74,16 @@ export class ContactsController {
   public async findAllContacts() {
     try {
       return await this.findAllUseCase.run();
+    } catch (e) {
+      console.log(e);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @Get('count-by-city')
+  public async countContactsByCity() {
+    try {
+      return await this.countAllByCityUseCase.run();
     } catch (e) {
       console.log(e);
       throw new InternalServerErrorException();

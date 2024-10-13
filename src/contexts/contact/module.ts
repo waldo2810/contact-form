@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CountryEntity } from './_countries/infrastructure/persistence/typeorm/country.entity';
+import { CountAllContactsByCity } from './contacts/application/CountAllByCity/CountAllContactsByCity';
 import { CreateContact } from './contacts/application/Create/CreateContact';
 import { DeleteContact } from './contacts/application/Delete/DeleteContact';
 import { FindAllContacts } from './contacts/application/FindAll/FindAllContacts';
+import { FindAllContactsByCity } from './contacts/application/FindAllByCity/FindAllContactsByCity';
 import { FindContactById } from './contacts/application/FindById/FindContactById';
 import { ContactsController } from './contacts/infrastructure/ContactsController';
 import { ContactTypeOrmRepository } from './contacts/infrastructure/persistence/ContactTypeOrmRepository';
@@ -14,7 +16,6 @@ import { FindCityByCountryCodeAndStateCode } from './places/application/FindCity
 import { FindCountryByCode } from './places/application/FindCountryByCode';
 import { FindStateByCode } from './places/application/FindStateByCode';
 import { PlacesApiRepository } from './places/infrastructure/PlacesApiRepository';
-import { FindAllContactsByCity } from './contacts/application/FindAllByCity/FindAllContactsByCity';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { FindAllContactsByCity } from './contacts/application/FindAllByCity/Find
     FindAllContacts,
     FindAllContactsByCity,
     DeleteContact,
+    CountAllContactsByCity,
     FindAllCountries,
     FindCountryByCode,
     FindStateByCode,

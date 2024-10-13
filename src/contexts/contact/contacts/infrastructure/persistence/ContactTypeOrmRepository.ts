@@ -42,4 +42,13 @@ export class ContactTypeOrmRepository implements ContactRepository {
   public async delete(id: ContactId): Promise<void> {
     await this.repository.delete(id.toString());
   }
+
+  public async countByCity(): Promise<any> {
+    return await this.repository
+      .createQueryBuilder('contact')
+      .select('city')
+      .addSelect('COUNT(city)', 'count')
+      .groupBy('city')
+      .getRawMany();
+  }
 }
