@@ -20,13 +20,13 @@ export class ContactTypeOrmRepository implements ContactRepository {
   }
 
   public async findAll(): Promise<Contact[]> {
-    const found = await this.repository.find();
+    const found = await this.repository.find({ where: { deleted: false } });
     return found.map((found) => Contact.fromPrimitives(found));
   }
 
   public async findById(id: ContactId): Promise<Contact | null> {
     const found = await this.repository.findOne({
-      where: { id: id.toString() },
+      where: { id: id.toString(), deleted: false },
     });
     if (!found) return null;
     return Contact.fromPrimitives(found);
@@ -34,7 +34,7 @@ export class ContactTypeOrmRepository implements ContactRepository {
 
   public async findAllByCity(cityName: string): Promise<Contact[]> {
     const found = await this.repository.find({
-      where: { city: cityName },
+      where: { city: cityName, deleted: false },
     });
     return found.map((found) => Contact.fromPrimitives(found));
   }
@@ -47,6 +47,7 @@ export class ContactTypeOrmRepository implements ContactRepository {
     return await this.repository
       .createQueryBuilder('contact')
       .select('city')
+      .where('deleted = false')
       .addSelect('COUNT(city)', 'count')
       .groupBy('city')
       .getRawMany();
