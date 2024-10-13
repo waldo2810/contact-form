@@ -20,7 +20,9 @@ export class FindCityByCountryCodeAndStateCode {
         stateCode,
       );
       const city = cities.find((city) => city.getName() === cityName);
-      if (!city) throw new CityNotFoundException(cityName);
+      if (!city) {
+        throw new CityNotFoundException(cityName, stateCode, countryCode);
+      }
       return new CityResponse(city);
     } catch (e) {
       throw e;
