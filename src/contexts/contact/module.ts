@@ -5,10 +5,13 @@ import { CountryEntity } from './_countries/infrastructure/persistence/typeorm/c
 import { CountAllContactsByCity } from './contacts/application/CountAllByCity/CountAllContactsByCity';
 import { CreateContact } from './contacts/application/Create/CreateContact';
 import { DeleteContact } from './contacts/application/Delete/DeleteContact';
+import { ExportContactToPdf } from './contacts/application/ExportToPDF/ExportContactToPDF';
 import { FindAllContacts } from './contacts/application/FindAll/FindAllContacts';
 import { FindAllContactsByCity } from './contacts/application/FindAllByCity/FindAllContactsByCity';
 import { FindContactById } from './contacts/application/FindById/FindContactById';
+import { ModifyContact } from './contacts/application/Modify/ModifyContact';
 import { ContactsController } from './contacts/infrastructure/ContactsController';
+import { PDFGenerator } from './contacts/infrastructure/PDFGenerator';
 import { ContactTypeOrmRepository } from './contacts/infrastructure/persistence/ContactTypeOrmRepository';
 import { ContactEntity } from './contacts/infrastructure/persistence/typeorm/contact.entity';
 import { FindAllCountries } from './places/application/FindAllCountries';
@@ -16,7 +19,6 @@ import { FindCityByCountryCodeAndStateCode } from './places/application/FindCity
 import { FindCountryByCode } from './places/application/FindCountryByCode';
 import { FindStateByCode } from './places/application/FindStateByCode';
 import { PlacesApiRepository } from './places/infrastructure/PlacesApiRepository';
-import { ModifyContact } from './contacts/application/Modify/ModifyContact';
 
 @Module({
   imports: [
@@ -44,12 +46,14 @@ import { ModifyContact } from './contacts/application/Modify/ModifyContact';
     DeleteContact,
     ModifyContact,
     CountAllContactsByCity,
+    ExportContactToPdf,
     FindAllCountries,
     FindCountryByCode,
     FindStateByCode,
     FindCityByCountryCodeAndStateCode,
     { provide: 'ContactRepository', useClass: ContactTypeOrmRepository },
     { provide: 'PlacesRepository', useClass: PlacesApiRepository },
+    { provide: 'PDFGeneration', useClass: PDFGenerator },
   ],
   controllers: [ContactsController],
 })

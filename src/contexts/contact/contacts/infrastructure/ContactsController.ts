@@ -10,7 +10,9 @@ import {
   Post,
   Put,
   Query,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { CityNotFoundException } from '../../places/domain/exceptions/CityNotFoundException';
 import { CountryNotFoundException } from '../../places/domain/exceptions/CountryNotFoundException';
 import { StateNotFoundException } from '../../places/domain/exceptions/StateNotFoundException';
@@ -18,6 +20,7 @@ import { CountAllContactsByCity } from '../application/CountAllByCity/CountAllCo
 import { CreateContact } from '../application/Create/CreateContact';
 import { CreateContactDto } from '../application/Create/CreateContactDto';
 import { DeleteContact } from '../application/Delete/DeleteContact';
+import { ExportContactToPdf } from '../application/ExportToPDF/ExportContactToPDF';
 import { FindAllContacts } from '../application/FindAll/FindAllContacts';
 import { FindContactById } from '../application/FindById/FindContactById';
 import { ModifyContact } from '../application/Modify/ModifyContact';
@@ -34,6 +37,7 @@ export class ContactsController {
     private readonly findByIdUseCase: FindContactById,
     private readonly findAllUseCase: FindAllContacts,
     private readonly deleteContactUseCase: DeleteContact,
+    private readonly exportContactUseCase: ExportContactToPdf,
     private readonly modifyContactUseCase: ModifyContact,
     private readonly countAllByCityUseCase: CountAllContactsByCity,
   ) {}
@@ -56,6 +60,22 @@ export class ContactsController {
       console.log(e);
       throw new InternalServerErrorException();
     }
+  }
+
+  @Get('/export/:id')
+  async exportContactToPDF(
+    @Param('id') id: string,
+    @Res() res: Response,
+  ): Promise<void> {
+    const buffer = await this.exportContactUseCase.run(id);
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'inline; filename=example.pdf',
+      'Content-Length': buffer.length,
+    });
+
+    res.end(buffer);
   }
 
   @Put(':id')
