@@ -12,7 +12,13 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Response } from 'express';
 import { CityNotFoundException } from '../../places/domain/exceptions/CityNotFoundException';
 import { CountryNotFoundException } from '../../places/domain/exceptions/CountryNotFoundException';
@@ -83,7 +89,7 @@ export class ContactsController {
 
     res.set({
       'Content-Type': 'application/pdf',
-      'Content-Disposition': 'inline; filename=example.pdf',
+      'Content-Disposition': 'attachment; filename=example.pdf',
       'Content-Length': buffer.length,
     });
 
@@ -127,7 +133,7 @@ export class ContactsController {
       'Pass an ID and delete the contact. Choose if soft or permanent',
   })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiParam({ name: 'soft', type: 'boolean' })
+  @ApiQuery({ name: 'soft', type: 'boolean' })
   public async deleteContact(
     @Param('id') id: string,
     @Query('soft') soft: boolean,
