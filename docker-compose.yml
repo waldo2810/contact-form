@@ -29,6 +29,9 @@ services:
       MYSQL_USERNAME: ${MYSQL_USERNAME}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+      RAPID_API_URL: ${RAPID_API_URL}
+      X_RAPIDAPI_KEY: ${X_RAPIDAPI_KEY}
+      X_RAPIDAPI_HOST: ${X_RAPIDAPI_HOST}
     depends_on:
       - db  # Wait for the database to be ready
     networks:
