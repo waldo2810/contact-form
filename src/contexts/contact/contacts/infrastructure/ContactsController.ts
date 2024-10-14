@@ -36,6 +36,7 @@ import { ContactNotFoundException } from '../domain/exceptions/ContactNotFoundEx
 import { FutureBirthDateException } from '../domain/exceptions/FutureBirthdateException';
 import { MoreThanThreeContactsInCityError } from '../domain/exceptions/MoreThanThreeContactsInCityError';
 import { UserIsMinorError } from '../domain/exceptions/UserIsMinorError';
+import { InvalidArgumentError } from '../domain/exceptions/InvalidArgumentError';
 
 @Controller('contacts')
 @ApiTags('contacts')
@@ -61,6 +62,7 @@ export class ContactsController {
       return await this.createContactUseCase.run(req);
     } catch (e) {
       if (
+        e instanceof InvalidArgumentError ||
         e instanceof FutureBirthDateException ||
         e instanceof UserIsMinorError ||
         e instanceof CountryNotFoundException ||
