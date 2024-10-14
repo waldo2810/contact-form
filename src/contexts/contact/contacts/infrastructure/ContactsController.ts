@@ -29,8 +29,10 @@ import { ContactNotFoundException } from '../domain/exceptions/ContactNotFoundEx
 import { FutureBirthDateException } from '../domain/exceptions/FutureBirthdateException';
 import { MoreThanThreeContactsInCityError } from '../domain/exceptions/MoreThanThreeContactsInCityError';
 import { UserIsMinorError } from '../domain/exceptions/UserIsMinorError';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('contacts')
+@ApiTags('contacts')
 export class ContactsController {
   constructor(
     private readonly createContactUseCase: CreateContact,
@@ -43,6 +45,12 @@ export class ContactsController {
   ) {}
 
   @Post()
+  @ApiOperation({
+    summary: 'Create contact',
+    description: 'Creates a new contact',
+  })
+  @ApiBody({ type: CreateContactDto })
+  @ApiResponse({ status: 201, description: 'Created' })
   public async createContact(@Body() req: CreateContactDto) {
     try {
       return await this.createContactUseCase.run(req);
