@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { PlacesRepository } from '../domain/PlacesRepository';
 import { CountryResponse } from './CountryResponse';
-import { CountryNotFoundException } from '../../_countries/domain/exceptions/CountryNotFoundException';
+import { CountryNotFoundException } from '../domain/exceptions/CountryNotFoundException';
 
 export class FindCountryByCode {
   constructor(

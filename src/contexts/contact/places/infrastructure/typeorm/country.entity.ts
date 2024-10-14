@@ -9,5 +9,5 @@ export class CountryEntity {
   name: string;
 
   @Column()
-  code: string;
+  isoCode: string;
 }

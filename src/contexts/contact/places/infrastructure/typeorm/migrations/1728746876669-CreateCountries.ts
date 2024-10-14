@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 export class CreateCountries1728746876669 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-        INSERT INTO countries (id, name, code) VALUES 
+        INSERT INTO countries (id, name, isoCode) VALUES 
         ('1','Afghanistan', 'AF'),
         ('2','Albania', 'AL'),
         ('3','Algeria', 'DZ'),

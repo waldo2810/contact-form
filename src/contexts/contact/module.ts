@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CountryEntity } from './_countries/infrastructure/persistence/typeorm/country.entity';
 import { CountAllContactsByCity } from './contacts/application/CountAllByCity/CountAllContactsByCity';
 import { CreateContact } from './contacts/application/Create/CreateContact';
 import { DeleteContact } from './contacts/application/Delete/DeleteContact';
@@ -19,6 +18,8 @@ import { FindCityByCountryCodeAndStateCode } from './places/application/FindCity
 import { FindCountryByCode } from './places/application/FindCountryByCode';
 import { FindStateByCode } from './places/application/FindStateByCode';
 import { PlacesApiRepository } from './places/infrastructure/PlacesApiRepository';
+import { CountryEntity } from './places/infrastructure/typeorm/country.entity';
+import { StateEntity } from './places/infrastructure/typeorm/state.entity';
 
 @Module({
   imports: [
@@ -36,7 +37,7 @@ import { PlacesApiRepository } from './places/infrastructure/PlacesApiRepository
         synchronize: true,
       }),
     }),
-    TypeOrmModule.forFeature([ContactEntity, CountryEntity]),
+    TypeOrmModule.forFeature([ContactEntity, CountryEntity, StateEntity]),
   ],
   providers: [
     CreateContact,
