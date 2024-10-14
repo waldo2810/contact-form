@@ -87,15 +87,22 @@ export class ContactsController {
     @Param('id') id: string,
     @Res() res: Response,
   ): Promise<void> {
-    const buffer = await this.exportContactUseCase.run(id);
+    try {
+      const buffer = await this.exportContactUseCase.run(id);
 
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': 'attachment; filename=example.pdf',
-      'Content-Length': buffer.length,
-    });
+      res.set({
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'attachment; filename=example.pdf',
+        'Content-Length': buffer.length,
+      });
 
-    res.end(buffer);
+      res.end(buffer);
+    } catch (e) {
+      if (e instanceof ContactNotFoundException) {
+        throw new BadRequestException(e.message);
+      }
+      throw new InternalServerErrorException();
+    }
   }
 
   @Put(':id')
