@@ -1,5 +1,29 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsOptional, IsString } from 'class-validator';
+
+class AddressDto {
+  @ApiProperty()
+  @IsString()
+  line1: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  line2?: string;
+
+  @ApiProperty()
+  @IsString()
+  city: string;
+
+  @ApiProperty()
+  @IsString()
+  state: string;
+
+  @ApiProperty()
+  @IsString()
+  country: string;
+}
 
 export class CreateContactDto {
   @IsString()
@@ -18,11 +42,6 @@ export class CreateContactDto {
   @ApiProperty()
   sex: string;
   @ApiProperty()
-  address: {
-    line1: string;
-    line2?: string;
-    city: string;
-    state: string;
-    country: string;
-  };
+  @Type(() => AddressDto)
+  address: AddressDto;
 }
