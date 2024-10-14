@@ -15,6 +15,7 @@ import { ContactId } from '../../domain/value-objects/ContactId';
 import { ContactLastName } from '../../domain/value-objects/ContactLastName';
 import { ContactResponse } from '../ContactResponse';
 import { ModifyContactDto } from './ModifyContactDto';
+import { ContactSex } from '../../domain/value-objects/ContactSex';
 
 @Injectable()
 export class ModifyContact {
@@ -46,6 +47,7 @@ export class ModifyContact {
       birthDate: req.birthDate
         ? new ContactBirthDate(req.birthDate)
         : undefined,
+      sex: req.sex ? new ContactSex(req.sex) : undefined,
       line1: updatedAddress?.line1,
       city: updatedAddress?.city,
       state: updatedAddress?.state,

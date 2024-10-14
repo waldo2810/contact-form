@@ -9,6 +9,7 @@ import { ContactBirthDate } from '../../domain/value-objects/ContactBirthDate';
 import { ContactEmail } from '../../domain/value-objects/ContactEmail';
 import { ContactFirstName } from '../../domain/value-objects/ContactFirstName';
 import { ContactLastName } from '../../domain/value-objects/ContactLastName';
+import { ContactSex } from '../../domain/value-objects/ContactSex';
 import { ContactResponse } from '../ContactResponse';
 import { FindAllContactsByCity } from '../FindAllByCity/FindAllContactsByCity';
 import { CreateContactDto } from './CreateContactDto';
@@ -31,6 +32,7 @@ export class CreateContact {
       new ContactLastName(req.lastName),
       new ContactEmail(req.email),
       new ContactBirthDate(req.birthDate),
+      new ContactSex(req.sex),
       validAddress.line1,
       validAddress.city,
       validAddress.state,

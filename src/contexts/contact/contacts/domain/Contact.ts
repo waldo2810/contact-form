@@ -3,6 +3,7 @@ import { ContactEmail } from './value-objects/ContactEmail';
 import { ContactFirstName } from './value-objects/ContactFirstName';
 import { ContactId } from './value-objects/ContactId';
 import { ContactLastName } from './value-objects/ContactLastName';
+import { ContactSex } from './value-objects/ContactSex';
 
 export class Contact {
   private readonly id: ContactId;
@@ -10,6 +11,7 @@ export class Contact {
   private lastName: ContactLastName;
   private email: ContactEmail;
   private birthDate: ContactBirthDate;
+  private sex: ContactSex;
   private line1: string;
   private line2?: string;
   private city: string;
@@ -23,6 +25,7 @@ export class Contact {
     lastName: ContactLastName,
     email: ContactEmail,
     birthDate: ContactBirthDate,
+    sex: ContactSex,
     line1: string,
     city: string,
     state: string,
@@ -35,6 +38,7 @@ export class Contact {
     this.lastName = lastName;
     this.email = email;
     this.birthDate = birthDate;
+    this.sex = sex;
     this.line1 = line1;
     this.line2 = line2;
     this.city = city;
@@ -48,6 +52,7 @@ export class Contact {
     lastName: ContactLastName,
     email: ContactEmail,
     birthDate: ContactBirthDate,
+    sex: ContactSex,
     line1: string,
     city: string,
     state: string,
@@ -61,6 +66,7 @@ export class Contact {
       lastName,
       email,
       birthDate,
+      sex,
       line1,
       city,
       state,
@@ -75,6 +81,7 @@ export class Contact {
     if (fields.lastName) this.lastName = fields.lastName;
     if (fields.email) this.email = fields.email;
     if (fields.birthDate) this.birthDate = fields.birthDate;
+    if (fields.sex) this.sex = fields.sex;
     if (fields.line1) this.line1 = fields.line1;
     if (fields.city) this.city = fields.city;
     if (fields.state) this.state = fields.state;
@@ -95,6 +102,7 @@ export class Contact {
       lastName: this.lastName.getValue(),
       email: this.email.getValue(),
       birthDate: this.birthDate.getValue().toISOString(),
+      sex: this.sex.getValue(),
       line1: this.line1,
       line2: this.line2,
       city: this.city,
@@ -111,6 +119,7 @@ export class Contact {
       new ContactLastName(primitives.lastName),
       new ContactEmail(primitives.email),
       new ContactBirthDate(primitives.birthDate),
+      new ContactSex(primitives.sex),
       primitives.line1,
       primitives.city,
       primitives.state,
@@ -158,5 +167,9 @@ export class Contact {
 
   public getCountry(): string {
     return this.country;
+  }
+
+  public getSex(): ContactSex {
+    return this.sex;
   }
 }

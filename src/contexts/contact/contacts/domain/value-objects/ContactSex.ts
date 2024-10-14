@@ -1,16 +1,16 @@
 import { StringValueObject } from 'src/contexts/shared/domain/value-object/StringValueObject';
 import { InvalidArgumentError } from '../exceptions/InvalidArgumentError';
 
-export class ContactEmail extends StringValueObject {
-  constructor(email: string) {
-    super(email);
-    this.ensureIsValid(email);
+export class ContactSex extends StringValueObject {
+  constructor(name: string) {
+    super(name);
+    this.ensureIsValid(name);
   }
 
   private ensureIsValid(value: string): void {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const regex = /^(male|female)$/;
     if (!regex.test(value)) {
-      throw new InvalidArgumentError(`The email ${value} is invalid`);
+      throw new InvalidArgumentError(`Sex ${value} is invalid`);
     }
   }
 }

@@ -4,6 +4,7 @@ type ContactPrimitives = {
   lastName: string;
   email: string;
   birthDate: string;
+  sex: string;
   line1: string;
   city: string;
   state: string;
@@ -17,6 +18,7 @@ type ModifyContactFields = {
   lastName?: ContactLastName;
   email?: ContactEmail;
   birthDate?: ContactBirthDate;
+  sex?: ContactSex;
   line1?: string;
   city?: string;
   state?: string;
